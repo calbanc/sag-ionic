@@ -1,0 +1,46 @@
+<ion-header [translucent]="true" mode="ios">
+  <ion-toolbar>
+    <ion-title size="normal">{{ titulo }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrarsesion()">
+        <ion-icon name="logo-ionic" color="danger"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content color="light">
+  <div >
+    <ion-item>
+      <ion-grid fixed>
+        <ion-row>
+          <ion-col size="6">
+            
+              <ion-datetime-button datetime="datetime"></ion-datetime-button>
+  
+              <ion-modal [keepContentsMounted]="true" #picker>
+                <ng-template>
+                  <ion-datetime id="datetime" presentation="date">
+                    <ion-buttons slot="buttons">
+                      <ion-button color="medium" (click)="picker.dismiss()">Cancelar</ion-button>
+                      <ion-button color="primary" (click)="confirm(picker)">Aceptar</ion-button>
+                    </ion-buttons>
+                  </ion-datetime>
+                </ng-template>
+              </ion-modal>
+            
+          </ion-col>
+          <ion-col size="6">
+            
+              <ion-button shape="round">Mostrar</ion-button>
+            
+            
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+
+   
+  </div>
+</ion-content>

@@ -1,0 +1,7 @@
+.centered-wrapper {
+    height: 100%;                 /* ocupa toda la pantalla */
+    display: flex;
+    justify-content: center;       /* centra en vertical */
+    align-items: center;           /* centra en horizontal */
+    text-align: center;            /* centra el texto dentro */
+  }
