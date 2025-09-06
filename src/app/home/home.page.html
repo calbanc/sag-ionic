@@ -21,7 +21,8 @@
   
               <ion-modal [keepContentsMounted]="true" #picker>
                 <ng-template>
-                  <ion-datetime id="datetime" presentation="date">
+                  <ion-datetime id="datetime" presentation="date"  [value]="selectedDate"
+                  (ionChange)="onDateChange($event)">
                     <ion-buttons slot="buttons">
                       <ion-button color="medium" (click)="picker.dismiss()">Cancelar</ion-button>
                       <ion-button color="primary" (click)="confirm(picker)">Aceptar</ion-button>

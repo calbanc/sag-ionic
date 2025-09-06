@@ -36,12 +36,12 @@ export class LoginPage implements OnInit {
     // Validar si hay un username guardado en localStorage
     const savedUsername = localStorage.getItem('username');
     if (savedUsername) {
-      console.log('Username encontrado en localStorage:', savedUsername);
+      
       this.username = savedUsername;
       // Opcional: redirigir automáticamente si ya está logueado
       this.router.navigate(['home']);
     } else {
-      console.log('No hay username guardado en localStorage');
+      
     }
   }
 

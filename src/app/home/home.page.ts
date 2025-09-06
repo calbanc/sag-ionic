@@ -3,6 +3,7 @@ import { IonHeader, IonToolbar, IonTitle, IonContent,IonButtons,IonButton,IonIco
 import { addIcons } from 'ionicons';
 import { logoIonic, ellipsisHorizontal, ellipsisVertical, exitOutline } from 'ionicons/icons';
 import { AlertController, LoadingController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 
 
@@ -40,12 +41,18 @@ export class HomePage implements  OnInit  {
 
   constructor(
     private alertController:AlertController,
+    private router:Router
   ) {
     addIcons({
       'logo-ionic': exitOutline,
       'ellipsis-horizontal': ellipsisHorizontal,
       'ellipsis-vertical': ellipsisVertical,
     });
+  }
+
+  onDateChange(event: CustomEvent) {
+    this.selectedDate = event.detail.value; // string en formato ISO (YYYY-MM-DD o ISO completo)
+    console.log('Fecha seleccionada:', this.selectedDate);
   }
 
       async cerrarsesion(){
@@ -68,7 +75,8 @@ export class HomePage implements  OnInit  {
           }, {
             text: 'Cerrar Sesion',
             handler: () => {
-              
+              localStorage.removeItem('username');
+              this.router.navigate(['login']);
             
               
             }
@@ -86,7 +94,9 @@ export class HomePage implements  OnInit  {
   
     confirm(modal: IonModal) {
       const dt = document.getElementById('datetime') as HTMLIonDatetimeElement;
-      dt?.confirm();           // Confirma el valor (emite ionChange/ionConfirm)
+      console.log(this.selectedDate);
+      dt?.confirm();   
+              // Confirma el valor (emite ionChange/ionConfirm)
       modal.dismiss('ok');     // Cierra el modal
     }
   
