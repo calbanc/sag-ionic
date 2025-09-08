@@ -25,3 +25,16 @@
 #container a {
   text-decoration: none;
 }
+.has-fab-padding {
+  --padding-bottom: 96px; /* ajusta a 88–104px según veas el tamaño del FAB */
+}
+
+/* Posición segura del FAB, respetando safe area y (si existiera) un footer */
+.sticky-fab {
+  --offset-end: 16px;
+  /* si NO tienes footer, con 16px basta: */
+  --offset-bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
+
+  /* si SÍ tienes un ion-footer (≈56–64px de alto), usa esto en cambio: */
+  /* --offset-bottom: calc(env(safe-area-inset-bottom, 0px) + 64px); */
+}

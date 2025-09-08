@@ -9,7 +9,7 @@ export class dataModel
     public sps:string,
     public actividad:string,
     public observacion:string,
-    public auto:boolean
+    public auto:boolean|number
     
 
   ){

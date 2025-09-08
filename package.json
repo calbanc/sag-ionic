@@ -22,9 +22,12 @@
     "@angular/platform-browser-dynamic": "^20.0.0",
     "@angular/router": "^20.0.0",
     "@ionic/angular": "^8.0.0",
+    "exceljs": "^4.4.0",
+    "file-saver": "^2.0.5",
     "ionicons": "^7.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
+    "xlsx": "^0.18.5",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
@@ -38,7 +41,10 @@
     "@angular/compiler-cli": "^20.0.0",
     "@angular/language-service": "^20.0.0",
     "@ionic/angular-toolkit": "^12.0.0",
+    "@types/exceljs": "^0.5.3",
+    "@types/file-saver": "^2.0.7",
     "@types/jasmine": "~5.1.0",
+    "@types/node": "^24.3.1",
     "@typescript-eslint/eslint-plugin": "^8.18.0",
     "@typescript-eslint/parser": "^8.18.0",
     "eslint": "^9.16.0",

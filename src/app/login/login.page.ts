@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonRow,IonCol , IonGrid ,IonButton,IonInput} from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonRow,IonCol , IonGrid ,IonButton,IonInput, IonLabel, IonItem } from '@ionic/angular/standalone';
 import { IonDatetime, IonDatetimeButton, IonModal } from '@ionic/angular/standalone';
 
 import { Router } from '@angular/router';
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [
+  imports: [IonItem, IonLabel, 
     IonRow, 
     IonContent, 
     IonHeader, 

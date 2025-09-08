@@ -10,10 +10,18 @@
 </ion-header>
 
 
-<ion-content color="light">
+<ion-content color="light" fullscreen="true" class="has-fab-padding">
+
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end" class="sticky-fab">
+    <ion-fab-button id="open-modal">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
   <div >
     <ion-item>
-      <ion-grid fixed>
+      <ion-grid>
         <ion-row>
           <ion-col size="6">
             
@@ -21,12 +29,12 @@
   
               <ion-modal [keepContentsMounted]="true" #picker>
                 <ng-template>
-                  <ion-datetime id="datetime" presentation="date"  [value]="selectedDate"
-                  (ionChange)="onDateChange($event)">
-                    <ion-buttons slot="buttons">
-                      <ion-button color="medium" (click)="picker.dismiss()">Cancelar</ion-button>
-                      <ion-button color="primary" (click)="confirm(picker)">Aceptar</ion-button>
-                    </ion-buttons>
+                  <ion-datetime id="datetime" presentation="month-year"  mode="ios" [value]="selectedDate"
+  (ionChange)="onDateChange($event)">
+                     <ion-buttons slot="buttons">
+                      <ion-button color="medium" size="medium" (click)="picker.dismiss()">Cancelar</ion-button>
+                      <ion-button color="primary" size="medium" (click)="confirm(picker)">Aceptar</ion-button>
+                    </ion-buttons> 
                   </ion-datetime>
                 </ng-template>
               </ion-modal>
@@ -34,7 +42,7 @@
           </ion-col>
           <ion-col size="6">
             
-              <ion-button shape="round">Mostrar</ion-button>
+              <ion-button shape="round" (click)="getdata()" expand="block" size="medium"  >Mostrar</ion-button>
             
             
           </ion-col>
@@ -42,6 +50,161 @@
       </ion-grid>
     </ion-item>
 
+    <ion-card *ngFor="let item of  data">
+      <ion-card-header>
+        <ion-card-title>{{getActividadName(item.actividad)}}</ion-card-title>
+        <ion-card-subtitle>Fecha:{{item.fecha}}</ion-card-subtitle>
+      </ion-card-header>
+    
+      <ion-card-content>
+        Programa: {{getProgramaName(item.programa)}}<br>
+        Spss: {{item.sps}}<br>
+        Auto: {{item.auto === 1   ? 'SI' : 'NO'}}<br>
+        Hora Inicio: {{item.hora_inicio}}<br>
+        Hora Termino: {{item.hora_termino}}<br>
+        Observacion: {{item.observacion}}<br>
+        Tiempo: {{calculateTimeDifference(item.hora_inicio, item.hora_termino)}}
+      </ion-card-content>
+      <ion-button fill="clear" color="danger" (click)="eliminar(item.id)" >Eliminar</ion-button>
+      
+    </ion-card>
+    <ion-col size="6" class="ion-text-right">
+      <ion-button shape="round" (click)="descargarExcel()">
+        Descargar Excel
+      </ion-button>
+    </ion-col>
+  
    
+     <ion-modal #modal trigger="open-modal"  >
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>Agregar Registro</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="guardar(modal)">Guardar</ion-button>
+            </ion-buttons>
+            <ion-buttons slot="start">
+              <ion-button (click)="modal.dismiss()">Cerrar</ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content>
+          <ion-grid>
+
+            <ion-row>
+              <ion-col>
+                <ion-datetime-button datetime="datetime2"></ion-datetime-button>
+  
+              <ion-modal [keepContentsMounted]="true" #picker>
+                <ng-template>
+                  <ion-datetime id="datetime2" [preferWheel]="true" presentation="date"  mode="ios" [value]="selectedDate" (ionChange)="onDateChange($event)">
+                     <ion-buttons slot="buttons">
+                      <ion-button color="medium" (click)="picker.dismiss()">Cancelar</ion-button>
+                      <ion-button color="primary" (click)="confirm2(picker)">Aceptar</ion-button>
+                    </ion-buttons> 
+                  </ion-datetime>
+                </ng-template>
+              </ion-modal>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col>
+                <ion-item>                  
+                  <ion-input label="Rut" label-placement="floating"  #rut="ngModel" [(ngModel)]="datosmodel.rut" fill="outline" placeholder="Ingrese su Rut" readonly></ion-input>
+                </ion-item>
+              </ion-col>
+              
+            </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-item>                   
+                    <ion-input label="Sps" label-placement="floating"  #sps="ngModel" [(ngModel)]="datosmodel.sps" fill="outline" placeholder="Ingrese Sps" type="number" ></ion-input>
+                  </ion-item>
+                </ion-col>
+            </ion-row>
+
+
+            <ion-row>
+              <ion-col>
+                <ion-item>
+                  <ion-select justify="space-between" label="Programa" aria-label="Programa" interface="action-sheet" placeholder="Selecciona Programa" cancelText="Cancelar" #programa="ngModel" [(ngModel)]="datosmodel.programa"  >
+                    <ion-select-option *ngFor="let item of programaOptions"  [value]="item.code">{{item.name}}</ion-select-option>              
+                  </ion-select>
+                </ion-item>
+              </ion-col>
+              
+              
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <ion-item>
+                  <ion-select #actividad="ngModel" [(ngModel)]="datosmodel.actividad" justify="space-between" label="Actividad" aria-label="Actividad" interface="action-sheet" placeholder="Selecciona Actividad" cancelText="Cancelar" (ionCancel)="datosmodel.actividad = '' " >
+                    <ion-select-option *ngFor="let item of actividadOptions"  [value]="item.code">{{item.name}}</ion-select-option>              
+                  </ion-select>
+                </ion-item>
+              </ion-col>
+              
+              
+              
+            </ion-row>
+
+            <ion-row>
+              <ion-col>
+                <ion-item>
+                  <ion-label>Hora Inicio</ion-label>
+                  <ion-datetime-button datetime="datetime3"></ion-datetime-button>
+
+                      <ion-modal [keepContentsMounted]="true" #picker3>
+                        <ng-template>
+                          <ion-datetime  [showDefaultButtons]="true" doneText="Aceptar" cancelText="Cancelar"  #horainicio="ngModel" [(ngModel)]="datosmodel.hora_inicio" id="datetime3" [preferWheel]="true" presentation="time" mode="ios"  ></ion-datetime>
+                        
+                        </ng-template>
+                      </ion-modal>
+                </ion-item>
+              </ion-col>
+              
+              <ion-col>
+                <ion-item>
+                  <ion-label>Hora Termino</ion-label>
+                  <ion-datetime-button datetime="datetime4" ></ion-datetime-button>
+
+                      <ion-modal [keepContentsMounted]="true"  #picker4>
+                        <ng-template>
+                          <ion-datetime [showDefaultButtons]="true" doneText="Aceptar" cancelText="Cancelar"  #horatermino="ngModel" [(ngModel)]="datosmodel.hora_termino" id="datetime4" [preferWheel]="true" presentation="time" mode="ios" ></ion-datetime>
+                    
+                        </ng-template>
+                      </ion-modal>
+                </ion-item>
+              </ion-col>
+              
+              
+              
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <ion-item>
+                  <ion-toggle aria-label="Primary toggle"  [enableOnOffLabels]="true" color="primary" [checked]="false" #auto="ngModel" [(ngModel)]="datosmodel.auto">Auto</ion-toggle>
+                </ion-item>
+              </ion-col>
+              
+              
+              
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <ion-item>
+                  <ion-input label="Observacion" label-placement="floating"  #observacion="ngModel" [(ngModel)]="datosmodel.observacion" fill="outline" placeholder="Ingrese Observacion" type="text" ></ion-input>
+                </ion-item>
+              </ion-col>
+              
+              
+              
+            </ion-row>
+          </ion-grid>
+        </ion-content>
+      </ng-template>
+    </ion-modal> 
   </div>
 </ion-content>
+
